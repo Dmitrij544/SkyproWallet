@@ -24,7 +24,7 @@ input,
 button,
 select,
 a {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Montserrat', sans-serif;/* Изменения для ветки*/
   -webkit-font-smoothing: antialiased; 
   -moz-osx-font-smoothing: grayscale;
 }
