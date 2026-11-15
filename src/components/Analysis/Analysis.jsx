@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 
 function Analysis({ expenses }) {
-  // 🌟 FIXED: Track range boundary states instead of an independent array
-  const [startDate, setStartDate] = useState('2024-07-19');
-  const [endDate, setEndDate] = useState('2024-07-20');
+  
+  const [startDate, setStartDate] = useState(() => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`; 
+  });
 
-  // Generate all calendar day strings
+  const [endDate, setEndDate] = useState(null);
+
   const julyDays = Array.from({ length: 31 }, (_, i) => `2024-07-${String(i + 1).padStart(2, '0')}`);
   const augustDays = Array.from({ length: 31 }, (_, i) => `2024-08-${String(i + 1).padStart(2, '0')}`);
 
@@ -23,17 +29,31 @@ function Analysis({ expenses }) {
 
   const formatToLocalDate = (dateInput) => {
     if (!dateInput) return '';
-    return dateInput.split('T')[0]; // Safeguard string parsing splitting
+
+    const cleanStr = dateInput.split('T')[0];
+
+    if (cleanStr.includes('.')) {
+      const parts = cleanStr.split('.'); 
+      if (parts.length === 3) {
+        return `${parts[2]}-${parts[1]}-${parts[0]}`;
+      }
+    }
+
+    if (cleanStr.includes('/')) {
+      const parts = cleanStr.split('/');
+      if (parts.length === 3) {
+        return `${parts[2]}-${parts[1]}-${parts[0]}`;
+      }
+    }
+
+    return cleanStr;
   };
 
-  // 🌟 FIXED: Smart Range Selection Toggle Handler
   const handleDateClick = (clickedDate) => {
     if (!startDate || (startDate && endDate)) {
-      // Reset range: Make this click the new start date
       setStartDate(clickedDate);
       setEndDate(null);
     } else if (startDate && !endDate) {
-      // If the clicked date is chronologically before the start date, swap them
       if (clickedDate < startDate) {
         setEndDate(startDate);
         setStartDate(clickedDate);
@@ -43,14 +63,12 @@ function Analysis({ expenses }) {
     }
   };
 
-  // 🌟 FIXED: Helper function to determine if a calendar date falls within the selected range
   const isDateSelected = (date) => {
     if (!startDate) return false;
     if (!endDate) return date === startDate;
     return date >= startDate && date <= endDate;
   };
 
-  // 🌟 FIXED: Accumulate all valid calendar strings within active boundaries
   const getSelectedDatesArray = () => {
     if (!startDate) return [];
     if (!endDate) return [startDate];
@@ -61,20 +79,18 @@ function Analysis({ expenses }) {
 
   const activeDatesList = getSelectedDatesArray();
 
-  // Filter financial data across the whole covered range span
-  const filteredExpenses = expenses.filter((item) => 
-    activeDatesList.includes(formatToLocalDate(item.date))
-  );
-  
-  const totalDaySum = filteredExpenses.reduce((sum, item) => sum + item.sum, 0);
+  const filteredExpenses = expenses.filter((item) => {
+    const itemDate = formatToLocalDate(item.date);
+    return activeDatesList.includes(itemDate);
+  });
 
-  // Parse strings into readable text tokens
+  const totalDaySum = filteredExpenses.reduce((sum, item) => sum + Number(item.sum), 0);
+
   const parseDateObj = (dateStr) => {
     const [, month, day] = dateStr.split('-');
     return { day: parseInt(day), monthText: month === '07' ? 'июля' : 'августа' };
   };
 
-  // 🌟 FIXED: Smooth structural subtitle generator for custom range spreads
   const formatRangeLabel = () => {
     if (!startDate) return 'выберите период';
     
@@ -90,19 +106,18 @@ function Analysis({ expenses }) {
     return `${start.day} ${start.monthText} – ${end.day} ${end.monthText} 2024`;
   };
 
-  // Group financial summaries across active date slices
   const chartData = categoriesDef.map((cat) => {
     const catSum = filteredExpenses
       .filter((item) => item.category === cat.id)
-      .reduce((sum, item) => sum + item.sum, 0);
+      .reduce((sum, item) => sum + Number(item.sum), 0); 
     return { ...cat, sum: catSum };
   });
+
 
   return (
     <main className="main-container">
       <div className="analysis-layout">
         
-        {/* Left Side: Calendar Board Grid */}
         <div className="calendar-section-wrapper">
           <h2 className="page-main-title">Анализ расходов</h2>
           <div className="calendar-section">
@@ -115,7 +130,7 @@ function Analysis({ expenses }) {
             </div>
 
             <div className="scrollable-calendar">
-              {/* JULY 2024 */}
+              
               <div className="month-group">
                 <h4>Июль 2024</h4>
                 <div className="days-grid">
@@ -137,7 +152,6 @@ function Analysis({ expenses }) {
                 </div>
               </div>
 
-              {/* AUGUST 2024 */}
               <div className="month-group">
                 <h4>Август 2024</h4>
                 <div className="days-grid august-grid">
@@ -167,7 +181,6 @@ function Analysis({ expenses }) {
           </div>
         </div>
 
-        {/* Right Side: Consolidated Range Dash Card */}
         <div className="charts-section">
           <div className="analysis-content">
             <div className="analytics-box">

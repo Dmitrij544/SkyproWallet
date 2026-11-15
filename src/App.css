@@ -180,6 +180,22 @@ a {
   font-size: 16px;
   font-weight: 700;
   line-height: 1;
+  margin-right: 327px;
+  margin-top: 2px;
+}
+
+.form-group.category-group.required-error::after {
+  /* Сбрасываем гигантский правый маргин, который был настроен под инпут даты */
+  margin-right: 0;
+  left: 93px; 
+  right: auto;
+  top: 0;
+}
+
+/* 🌟 ИСПРАВЛЕНО: Стили для окрашивания неверно заполненного инпута */
+.form-input.input-error {
+  border-color: #F25050 !important;     /* Красная рамка */
+  background-color: #FFEBEB !important; /* Нежно-розовый легкий фон */
 }
 
 .form-label {
@@ -246,8 +262,8 @@ a {
 }
 
 .submit-btn:disabled {
-  background-color: #cbd5e1 ; 
-  color: #94a3b8 ;            
+  background-color: #999999 ; 
+  color: #FFFFFF ;            
   cursor: not-allowed ;       
   transform: none ;            
   box-shadow: none ;          
@@ -885,4 +901,322 @@ a {
   width: 100%;
   pointer-events: none;
   background: transparent ; 
+}
+
+.auth-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  font-family: inherit;
+}
+
+.auth-modal {
+  background: #ffffff;
+  border-radius: 30px;
+  padding: 34px 32px;
+  width: 379px;
+  max-width: 366px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.15);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 313px;
+  transition: min-height 0.3s ease, padding 0.3s ease; 
+}
+
+.auth-modal.signup-mode {
+  min-height: 385px; 
+}
+
+.auth-logo {
+  font-size: 24px;
+  font-weight: 700;
+  color: #000000;
+  margin-bottom: 28px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.auth-wrapper {
+  width: 100%;
+}
+
+.auth-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #eaeaea;
+  width: 100%;
+}
+
+.auth-tab-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  font-weight: 600;
+  color: #a3a3a3;
+  padding-bottom: 8px;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.auth-tab-btn:hover {
+  color: #666666;
+}
+
+.auth-tab-btn.active {
+  color: #000000;
+}
+
+.auth-tab-btn.active::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: #000000;
+  border-radius: 2px 2px 0 0;
+}
+
+.auth-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.auth-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.auth-error-message {
+  color: #ff4d4f;
+  font-size: 13px;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+
+.auth-footer-text {
+  text-align: center;
+  margin-top: 22px;
+  font-size: 12px;
+  color: #999999;
+  font-weight: 400;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.auth-footer-text p {
+  margin: 0;
+}
+
+.auth-link {
+  color: #999999;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 400;
+  margin-left: 4px;
+  transition: color 0.15s ease;
+  border-bottom: 1px solid #999999;
+}
+
+.auth-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+}
+
+.auth-page-wrapper .auth-bg {
+  position: relative;
+  flex-grow: 1;
+  height: auto;
+  background-color: transparent; 
+}
+
+.auth-field {
+  width: 313px;
+  height: 39px;
+  border: 0.5px solid #999999;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.auth-submit-btn {
+  width: 313px;
+  height: 39px;
+  border-radius: 6px;
+  font-size: 12px;
+  border: 0.5px solid #7334EA;
+  background-color: #7334EA ;
+  color: #FFFFFF;
+}
+
+.auth-footer-text p {
+  display: flex;
+  flex-direction: column; 
+  align-items: center;    
+  gap: 4px;               
+  margin: 0;
+}
+
+.auth-link {
+  margin-left: 0;
+  margin-top: 4px;        
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset; 
+  -webkit-text-fill-color: #000000;             
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.auth-field:focus,
+.form-input:focus {
+  outline: none ;      
+}
+
+.auth-field,
+.form-input {
+  box-sizing: border-box ; 
+  padding-left: 12px ;    
+}
+
+.auth-field.field-error {
+  border-color: #F25050 ;     
+  background-color: #fff2f0 ; 
+}
+
+.auth-field.field-error::placeholder {
+  color: #FFEBEB ;
+}
+
+.auth-input-wrapper.required-error {
+  position: relative;
+  width: 100%;
+}
+
+.auth-input-wrapper.required-error::after {
+  content: '*';
+  position: absolute;
+  top: 56%;
+  margin-right: 278px;
+  transform: translateY(-50%); 
+  right: 16px;                 
+  color: #ff4d4f; 
+  font-size: 18px;
+  font-weight: 400;
+  pointer-events: none;        
+  z-index: 10;
+  font-family: 'Arial', sans-serif ; 
+}
+
+.auth-submit-btn:disabled {
+  background-color: #999999 ; 
+  color: #FFFFFF;
+  border-color: #999999;            
+  opacity: 0.7 ;
+  cursor: not-allowed ;       
+  box-shadow: none ;
+}
+
+.auth-input-wrapper.name-digits-error::after {
+  display: none ;
+}
+
+.name-text-tracker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding-left: 10px;
+  padding-right: 16px;
+  display: flex;
+  align-items: center;
+  pointer-events: none; 
+  overflow: hidden;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 15px;    
+}
+
+.invisible-text {
+  visibility: hidden;
+  white-space: pre; 
+}
+
+.dynamic-star {
+  color: #ff4d4f;
+  font-family: 'Arial', sans-serif;
+  font-size: 18px;
+  line-height: 1;
+  margin-left: 3px;
+  margin-top: 6px;
+}
+
+.auth-input-wrapper.dynamic-error::after {
+  display: none ;
+}
+
+.text-tracker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding-left: 10px; 
+  padding-right: 16px;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  overflow: hidden;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 15px;    
+}
+
+.invisible-text {
+  visibility: hidden;
+  white-space: pre;
+}
+
+.dynamic-star {
+  color: #ff4d4f;
+  font-family: 'Arial', sans-serif;
+  font-size: 18px;
+  line-height: 1;
+  margin-left: 7px;
+  margin-top: 6px;
+}
+
+html, body {
+  scrollbar-gutter: auto !important;
+}
+
+.auth-page-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
 }

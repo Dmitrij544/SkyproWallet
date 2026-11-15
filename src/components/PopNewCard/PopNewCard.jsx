@@ -76,39 +76,34 @@ function PopNewCard({ onAddExpense }) {
     }
   ];
 
-  const isFormValid = description.trim() !== '' && sum.trim() !== '' && category !== null && date.trim() !== '';
+  
+  const dateRegex = /^\d{2}\.(07|08)\.2024$/;
+
+  const hasDateFormatError = date.trim() !== '' && !dateRegex.test(date);
+
+  const isFormValid = !hasDateFormatError;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     setWasSubmitted(true);
 
-    if (!isFormValid) return;
-    
-    let formattedDate = date;
-
-    if (date.includes('.')) {
-      const parts = date.split('.'); 
-      if (parts.length === 3) {
-        const [day, month, year] = parts;
-        formattedDate = `${year}-${month}-${day}`; 
-      }
-    }
+    if (!description || !sum || !category) return;
 
     const newExpense = {
       id: Date.now(),
       description: description,
-      sum: sum, 
+      sum: Number(sum),
       category: category,
-      date: formattedDate
+      date: date || '2024-07-20' 
     };
 
     onAddExpense(newExpense);
-    
+
     setDescription('');
     setSum('');
-    setCategory('null');
-    setDate(''); 
+    setCategory(null);
+    setDate('');
+    setWasSubmitted(false);
   };
 
   return (
@@ -128,7 +123,7 @@ function PopNewCard({ onAddExpense }) {
           />
         </div>
 
-        <div className={`form-group ${wasSubmitted && category === null ? 'required-error' : ''}`}>
+        <div className={`form-group category-group ${wasSubmitted && category === null ? 'required-error' : ''}`}>
           <label className="form-label">Категория</label>
           <div className="category-buttons-grid">
             {categoriesList.map((cat, index) => (
@@ -148,34 +143,46 @@ function PopNewCard({ onAddExpense }) {
           </div>
         </div>
 
-        <div className="form-group">
+        <div className={`form-group ${hasDateFormatError ? 'required-error' : ''}`}>
           <label className="form-label">Дата</label>
           <input 
             type="text" 
-            className="form-input"
+            className={`form-input ${hasDateFormatError ? 'input-error' : ''}`}
             value={date}
             onChange={(e) => setDate(e.target.value)}
             placeholder="Введите дату" 
             maxLength="10" 
-            required 
+            required
           />
         </div>
 
-        <div className={`form-group ${wasSubmitted && sum.trim() === '' ? 'required-error' : ''}`}>
+        <div className="form-group">
           <label className="form-label">Сумма</label>
           <input 
             type="text"
             className="form-input" 
-            value={sum}
-            onChange={(e) => setSum(e.target.value)}
+            value={sum} 
+            onChange={(e) => {
+              let val = e.target.value;
+              val = val.replace(/\D/g, ''); 
+              if (val !== '') {
+                val = String(Number(val)); 
+              }
+              setSum(val);
+            }}
             placeholder="Введите сумму"
+            required 
           />
         </div>
 
         <button 
           type="submit" 
           className="submit-btn" 
-          disabled={wasSubmitted && !isFormValid}
+          disabled={!isFormValid}
+          style={{
+            opacity: isFormValid ? 1 : 0.5,
+            cursor: isFormValid ? 'pointer' : 'not-allowed'
+          }}
         >
           Добавить новый расход
         </button>
