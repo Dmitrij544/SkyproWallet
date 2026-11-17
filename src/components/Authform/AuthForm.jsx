@@ -105,31 +105,38 @@ const AuthForm = ({ onLoginSuccess }) => {
                               />
                               
                               {hasNameDigits && (
-                                 <div className="name-text-tracker" aria-hidden="true">
-                                    <span className="invisible-text">{formData.name}</span>
+                                 <>
+                                    <div className="name-text-tracker" aria-hidden="true">
+                                       <span className="invisible-text">{formData.name}</span>
+                                       <span className="dynamic-star">*</span>
+                                    </div>
+                                    <span className="field-tooltip">Имя не должно содержать чисел</span>
+                                 </>
+                              )}
+                           </div>
+                           )}
+
+                           <div className={`auth-input-wrapper ${(isLoginError || isAuthFailed) ? "required-error" : ""} ${(hasLoginFormatError || isAuthFailed) ? "dynamic-error" : ""}`}>
+                              <input
+                                 type="text"
+                                 name="login"
+                                 className={`auth-field ${(isLoginError || isAuthFailed) ? "field-error" : ""}`}
+                                 placeholder="Эл. почта"
+                                 value={formData.login}
+                                 onChange={handleChange}
+                              />
+                              
+                              {(hasLoginFormatError || isAuthFailed) && formData.login && (
+                                 <div className="text-tracker" aria-hidden="true">
+                                    <span className="invisible-text">{formData.login}</span>
                                     <span className="dynamic-star">*</span>
                                  </div>
                               )}
+
+                              {hasLoginFormatError && (
+                                 <span className="field-tooltip">Почта должна оканчиваться на @mail.ru</span>
+                              )}
                            </div>
-                        )}
-                        
-                        <div className={`auth-input-wrapper ${(isLoginError || isAuthFailed) ? "required-error" : ""} ${(hasLoginFormatError || isAuthFailed) ? "dynamic-error" : ""}`}>
-                           <input
-                              type="text"
-                              name="login"
-                              className={`auth-field ${(isLoginError || isAuthFailed) ? "field-error" : ""}`}
-                              placeholder="Эл. почта"
-                              value={formData.login}
-                              onChange={handleChange}
-                           />
-                           
-                           {(hasLoginFormatError || isAuthFailed) && formData.login && (
-                              <div className="text-tracker" aria-hidden="true">
-                                 <span className="invisible-text">{formData.login}</span>
-                                 <span className="dynamic-star">*</span>
-                              </div>
-                           )}
-                        </div>
 
                         <div className={`auth-input-wrapper ${(isPasswordEmpty || isAuthFailed) ? "required-error" : ""} ${isAuthFailed ? "dynamic-error" : ""}`}>
                            <input

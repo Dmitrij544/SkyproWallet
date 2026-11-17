@@ -1220,3 +1220,25 @@ html, body {
   height: 100%;
   overflow-y: auto;
 }
+
+.field-tooltip {
+  display: block;
+  color: #F84D4D;
+  font-size: 11px;
+  font-weight: 400;
+  margin-top: 4px;
+  padding-left: 10px;
+  text-align: left;
+  animation: fadeInTooltip 0.2s ease-out;
+}
+
+@keyframes fadeInTooltip {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
