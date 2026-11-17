@@ -1202,8 +1202,8 @@ input:-webkit-autofill:active {
   font-family: 'Arial', sans-serif;
   font-size: 18px;
   line-height: 1;
-  margin-left: 7px;
-  margin-top: 6px;
+  margin-left: 4px;
+  margin-top: -10px;
 }
 
 html, body {
