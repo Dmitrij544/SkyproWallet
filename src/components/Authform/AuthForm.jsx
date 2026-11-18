@@ -17,8 +17,11 @@ const AuthForm = ({ onLoginSuccess }) => {
 
    const hasNameDigits = isSignUp && /\d/.test(formData.name);
 
+   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
    const trimmedLogin = formData.login.trim();
-   const hasLoginFormatError = trimmedLogin !== '' && (!trimmedLogin.endsWith('@mail.ru') || trimmedLogin.length <= 8);
+   // Ошибка формата есть, только если поле не пустое и не соответствует шаблону email
+   const hasLoginFormatError = trimmedLogin !== '' && !emailRegex.test(trimmedLogin);
 
    const isNameError = isSignUp && ((wasSubmitted && !formData.name.trim()) || hasNameDigits);
    const isLoginError = (wasSubmitted && !trimmedLogin) || hasLoginFormatError;
@@ -134,7 +137,7 @@ const AuthForm = ({ onLoginSuccess }) => {
                               )}
 
                               {hasLoginFormatError && (
-                                 <span className="field-tooltip">Почта должна оканчиваться на @mail.ru</span>
+                                 <span className="field-tooltip">Введите корректный адрес эл. почты</span>
                               )}
                            </div>
 
